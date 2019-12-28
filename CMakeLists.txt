@@ -6,4 +6,9 @@ cmake_minimum_required (VERSION 3.8)
 project ("PiGPGPU")
 
 # Include sub-projects.
-add_subdirectory ("PiGPGPU")
+add_subdirectory ("src")
+
+add_custom_command(OUTPUT qpulib
+                   COMMAND make all
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib/QPULib
+)
