@@ -1,0 +1,3 @@
+[submodule "lib/QPULib"]
+	path = lib/QPULib
+	url = https://github.com/m516/QPULib
