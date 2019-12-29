@@ -1,0 +1,24 @@
+﻿# CMakeList.txt : CMake project for PiGPGPU, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.8)
+
+# Local header files here ONLY
+SET(TARGET_HEADERS
+PiGPGPU.h
+   )
+
+# Local source files here
+SET(TARGET_SOURCES
+PiGPGPU.cpp
+    )
+
+message(STATUS "QPULib sources: ${QPULIB_SOURCES}")
+
+# Add source to this project's executable.
+add_executable (PiGPGPU
+${TARGET_SOURCES} 
+${TARGET_HEADERS} 
+)
+
+target_link_libraries(PiGPGPU QPULib)
