@@ -5,15 +5,16 @@ cmake_minimum_required (VERSION 3.8)
 
 # Local header files here ONLY
 SET(TARGET_HEADERS
-PiGPGPU.h
+   PiGPGPU.h
    )
 
 # Local source files here
 SET(TARGET_SOURCES
-PiGPGPU.cpp
+    PiGPGPU.cpp
     )
 
-message(STATUS "QPULib sources: ${QPULIB_SOURCES}")
+    
+add_definitions(-fpermissive)
 
 # Add source to this project's executable.
 add_executable (PiGPGPU
