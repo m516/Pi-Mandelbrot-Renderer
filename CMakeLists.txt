@@ -3,10 +3,29 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("PiGPGPU")
+project (PiGPGPU)
 
 # Include libraries
 add_subdirectory("lib")
 
-# Include sub-projects.
-add_subdirectory ("src")
+
+#Compile differently for the Raspberry Pi
+find_path(HAS_BCMHOST bcm_host.h PATHS /opt/vc/include/)
+if (HAS_BCMHOST) #This is a Pi
+	message(STATUS "This is a Pi")
+	message(STATUS "Emulating GPU anyway")
+	#Set precompiler flags
+	add_definitions(-DEMULATION_MODE)
+
+else() #Not compiling on the Pi
+	message(STATUS "This is not a Pi")
+	message(STATUS "Emulating Pi's GPU")
+	#Add precompiler definitions
+	add_definitions(-DEMULATION_MODE)
+endif()
+
+#Include QPULib
+add_subdirectory("lib/QPULib")
+include_directories("${PROJECT_SOURCE_DIR}/lib/QPULib/Lib")
+
+add_subdirectory("src")
