@@ -1,28 +1,7 @@
 ﻿{
   "configurations": [
     {
-      "name": "Pi-Release-Minimal",
-      "generator": "Unix Makefiles",
-      "configurationType": "MinSizeRel",
-      "cmakeExecutable": "/usr/bin/cmake",
-      "remoteCopySourcesExclusionList": [ ".vs", ".git", "out" ],
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "linux_arm" ],
-      "remoteMachineName": "-984440951;raspberrypi (username=root, port=22, authentication=Password)",
-      "remoteCMakeListsRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src",
-      "remoteBuildRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/build/${name}",
-      "remoteInstallRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/install/${name}",
-      "remoteCopySources": true,
-      "rsyncCommandArgs": "-t --delete --delete-excluded",
-      "remoteCopyBuildOutput": false,
-      "remoteCopySourcesMethod": "rsync",
-      "addressSanitizerRuntimeFlags": "detect_leaks=0",
-      "variables": []
-    },
-    {
-      "name": "Pi-Release",
+      "name": "Deploy to Pi",
       "generator": "Unix Makefiles",
       "configurationType": "RelWithDebInfo",
       "cmakeExecutable": "/usr/bin/cmake",
@@ -43,7 +22,7 @@
       "variables": []
     },
     {
-      "name": "WSL-Release",
+      "name": "Deploy to WSL",
       "generator": "Unix Makefiles",
       "configurationType": "Release",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
@@ -58,33 +37,15 @@
       "variables": []
     },
     {
-      "name": "WSL-Debug",
-      "generator": "Unix Makefiles",
-      "configurationType": "Debug",
+      "name": "Windows",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeExecutable": "/usr/bin/cmake",
       "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
+      "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "linux_x64" ],
-      "wslPath": "${defaultWSLPath}",
-      "addressSanitizerRuntimeFlags": "detect_leaks=0",
-      "variables": []
-    },
-    {
-      "name": "WSL-Release-Minimal",
-      "generator": "Unix Makefiles",
-      "configurationType": "MinSizeRel",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeExecutable": "/usr/bin/cmake",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "linux_x64" ],
-      "wslPath": "${defaultWSLPath}",
-      "addressSanitizerRuntimeFlags": "detect_leaks=0",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": []
     }
   ]
