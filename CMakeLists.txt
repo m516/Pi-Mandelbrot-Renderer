@@ -13,9 +13,9 @@ add_subdirectory("lib")
 find_path(HAS_BCMHOST bcm_host.h PATHS /opt/vc/include/)
 if (HAS_BCMHOST) #This is a Pi
 	message(STATUS "This is a Pi")
-	message(STATUS "Emulating GPU anyway")
+	message(STATUS "Targeting VideoCore IV GPU")
 	#Set precompiler flags
-	add_definitions(-DEMULATION_MODE)
+	add_definitions(-DQPU_MODE)
 
 else() #Not compiling on the Pi
 	message(STATUS "This is not a Pi")
