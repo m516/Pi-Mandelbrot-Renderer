@@ -1,2 +1,2 @@
 # PiGPGPU
- Experiments with general purpose programming on the Raspberry Pi's GPU
+ This is a simple CMake project using QPULib. It has been tested on Ubuntu, Windows 10, and Raspbian Buster.
