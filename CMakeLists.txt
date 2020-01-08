@@ -17,11 +17,19 @@ if (HAS_BCMHOST) #This is a Pi
 	#Set precompiler flags
 	add_definitions(-DQPU_MODE)
 
+	#Include sfml-pi
+	add_subdirectory(lib/sfml-pi)
+	include_directories("${PROJECT_SOURCE_DIR}/lib/sfml-pi/include/SFML")
+
 else() #Not compiling on the Pi
 	message(STATUS "This is not a Pi")
 	message(STATUS "Emulating Pi's GPU")
 	#Add precompiler definitions
 	add_definitions(-DEMULATION_MODE)
+
+	#Include sfml
+	add_subdirectory(lib/sfml)
+	include_directories("${PROJECT_SOURCE_DIR}/lib/sfml/include/SFML")
 endif()
 
 #Include QPULib
