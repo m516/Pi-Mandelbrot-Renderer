@@ -1,3 +1,6 @@
 [submodule "lib/QPULib"]
 	path = lib/QPULib
 	url = https://github.com/m516/QPULib-CMake
+[submodule "lib/sfml-pi"]
+	path = lib/sfml-pi
+	url = https://github.com/mickelson/sfml-pi.git
