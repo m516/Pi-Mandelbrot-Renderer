@@ -25,3 +25,4 @@ ${TARGET_HEADERS}
 )
 
 target_link_libraries(PiGPGPU QPULib)
+target_link_libraries(PiGPGPU sfml-window sfml-graphics -static)
