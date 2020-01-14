@@ -4,6 +4,3 @@
 [submodule "lib/sfml-pi"]
 	path = lib/sfml-pi
 	url = https://github.com/mickelson/sfml-pi.git
-[submodule "lib/sfml"]
-	path = lib/sfml
-	url = https://github.com/SFML/sfml.git
