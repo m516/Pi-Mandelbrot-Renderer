@@ -16,10 +16,10 @@ if (HAS_BCMHOST) #This is a Pi
 	message(STATUS "Targeting VideoCore IV GPU")
 	#Set precompiler flags
 	add_definitions(-DQPU_MODE)
-	
-	#Configure SFML
+
+	#Include sfml-pi
 	add_subdirectory(lib/sfml-pi)
-	set(${PROJECT_SOURCE_DIR}/lib/sfml-pi)
+	include_directories("${PROJECT_SOURCE_DIR}/lib/sfml-pi/include/SFML")
 
 else() #Not compiling on the Pi
 	message(STATUS "This is not a Pi")
@@ -27,19 +27,13 @@ else() #Not compiling on the Pi
 	#Add precompiler definitions
 	add_definitions(-DEMULATION_MODE)
 
-	#Configure SFML
-	set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml/cmake/SFML)
-
+	#Include sfml
+	add_subdirectory(lib/sfml)
+	include_directories("${PROJECT_SOURCE_DIR}/lib/sfml/include/SFML")
 endif()
 
 #Include QPULib
 add_subdirectory("lib/QPULib")
 include_directories("${PROJECT_SOURCE_DIR}/lib/QPULib/Lib")
-#Include SFML
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml/include)
-#set(BUILD_SHARED_LIBS FALSE)
-set(SFML_STATIC_LIBRARIES TRUE)
-find_package(SFML 2.5 COMPONENTS window system graphics)
 
 add_subdirectory("src")
