@@ -14,7 +14,7 @@ int main()
 }
 
 */
-
+/*
 #include <stdlib.h>
 #include "QPULib.h"
 
@@ -50,6 +50,31 @@ int main()
     k(&a, &b, &r);
     for (int i = 0; i < 16; i++)
         printf("gcd(%i, %i) = %i\n", a[i], b[i], r[i]);
+
+    return 0;
+}
+*/
+#include <SFML/Graphics.hpp>
+
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        window.draw(shape);
+        window.display();
+    }
 
     return 0;
 }
