@@ -17,15 +17,26 @@ if (HAS_BCMHOST) #This is a Pi
 	#Set precompiler flags
 	add_definitions(-DQPU_MODE)
 
+	#Set SFML root directory
+	set(SFML_ROOT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml-pi)
+
 else() #Not compiling on the Pi
 	message(STATUS "This is not a Pi")
 	message(STATUS "Emulating Pi's GPU")
 	#Add precompiler definitions
 	add_definitions(-DEMULATION_MODE)
+
+	#Set SFML root directory
+	set(SFML_ROOT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml)
 endif()
 
 #Include QPULib
 add_subdirectory("lib/QPULib")
 include_directories("${PROJECT_SOURCE_DIR}/lib/QPULib/Lib")
+
+#Include SFML
+set(SFML_STATIC_LIBRARIES TRUE)
+set(BUILD_SHARED_LIBS FALSE)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/sfml)
 
 add_subdirectory("src")
