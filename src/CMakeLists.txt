@@ -16,7 +16,7 @@ SET(TARGET_SOURCES
     )
 
     
-add_definitions(-fpermissive)
+#add_definitions(-fpermissive)
 
 # Add source to this project's executable.
 add_executable (PiGPGPU
