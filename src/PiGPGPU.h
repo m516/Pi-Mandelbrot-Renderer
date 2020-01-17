@@ -5,5 +5,16 @@
 
 #include <iostream>
 
-// TODO: Reference additional headers your program requires here.
 #include "QPULib.h"
+#include <time.h>
+#include <SFML/Graphics.hpp>
+
+sf::Image* img;
+sf::Texture* tex;
+sf::Sprite* sprite;
+
+void initializeImage(int width, int height);
+
+void paintPixel(int x, int y, sf::Color color);
+
+void drawImage(sf::RenderTarget* renderTarget);

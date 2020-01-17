@@ -6,9 +6,7 @@
 
 #include "PiGPGPU.h"
 
-#include "QPULib.h"
-#include <time.h>
-#include <SFML/Graphics.hpp>
+#define MAX_FRACTAL_ITERATIONS 64
 
 
 void gcd(Ptr<Int> p, Ptr<Int> q, Ptr<Int> r)
@@ -33,7 +31,7 @@ void mandelbrot(Ptr<Float> x, Ptr<Float> y, Ptr<Int> iterations) {
 	Float p = *x;
 	Float q = *y;
 	Int it = *iterations;
-	Int mit = 10000;
+	Int mit = MAX_FRACTAL_ITERATIONS;
 
 	//Create a temporary value
 	Float xtemp = 0.0;
@@ -92,23 +90,59 @@ int main()
 
 
 
-	for (int i = 0; i < 16; i++) {
-		x[i] = -1.0f + (random_float() * 2.f);
-		y[i] = -1.0f + (random_float() * 2.f);
-		iterations[i] = 0;
-	}
 
-	// Invoke the kernel and display the result
-	k(&x, &y, &iterations);
-	for (int i = 0; i < 16; i++)
-		printf("mandelbrot(%2.3f, %2.3f) = %i\n", x[i], y[i], iterations[i]);
 
 
 
 	//Graphics
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow window(sf::VideoMode(800, 480), "SFML works!");
+	int width = window.getSize().x, height = window.getSize().y;
+
+	//Initialize the image
+	initializeImage(window.getSize().x, window.getSize().y);
+
+	int p = 0;
+	int q = 0;
+	int i = 0;
+	bool is_processing = true;
+	while (is_processing) {
+
+		//Load up the inputs
+		int ptemp = p;
+		int qtemp = q;
+		for (i = 0; i < 16; i++) {
+			x[i] = ((static_cast<float>(ptemp) / static_cast<float>(width)) - 0.7f) * 3.f;
+			y[i] = ((static_cast<float>(qtemp) / static_cast<float>(height)) - 0.5f) * 3.f;
+			iterations[i] = 0;
+
+			ptemp++;
+			if (ptemp >= width) {
+				ptemp = 0;
+				qtemp++;
+			}
+		}
+
+		// Invoke the kernel
+		k(&x, &y, &iterations);
+
+		// Use the output to change the pixels
+		for (i = 0; i < 16; i++) {
+			int val = iterations[i] * 255 / MAX_FRACTAL_ITERATIONS;
+			sf::Color c = sf::Color(val/3, val, val);
+			paintPixel(p, q, c);
+			p++;
+			if (p >= width) {
+				p = 0;
+				q++;
+				if (q >= height) {
+					is_processing = false;
+					break;
+				}
+			}
+		}
+	}
+
+	printf("Done!\n");
 
 	while (window.isOpen())
 	{
@@ -120,10 +154,33 @@ int main()
 		}
 
 		window.clear();
-		window.draw(shape);
+		drawImage(&window);
 		window.display();
 	}
 
 	return 0;
 }
 
+void initializeImage(int width, int height)
+{
+	img = new sf::Image();
+	img->create(width, height);
+
+	tex = new sf::Texture();
+	tex->create(width, height);
+
+	sprite = new sf::Sprite();
+	sprite->setTexture(*tex);
+}
+
+void paintPixel(int x, int y, sf::Color color)
+{
+	img->setPixel(x, y, color);
+}
+
+void drawImage(sf::RenderTarget* renderTarget)
+{
+	//Update the texture to the image
+	tex->update(*img);
+	renderTarget->draw(*sprite);
+}
