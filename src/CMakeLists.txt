@@ -24,10 +24,4 @@ ${TARGET_SOURCES}
 ${TARGET_HEADERS} 
 )
 
-#Link project with QPULib
 target_link_libraries(PiGPGPU QPULib)
-
-#Link project with SFML
-add_dependencies(PiGPGPU SFML)
-#target_link_libraries(PiGPGPU sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
-target_link_libraries(${SFML_LIBRARIES})
