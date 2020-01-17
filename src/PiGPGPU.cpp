@@ -26,10 +26,14 @@ void gcd(Ptr<Int> p, Ptr<Int> q, Ptr<Int> r)
 
 //Implementation of pseudocode from https://en.wikipedia.org/wiki/Mandelbrot_set#Escape_time_algorithm
 void mandelbrot(Ptr<Float> x, Ptr<Float> y, Ptr<Int> iterations) {
+	//Temporary variables
 	Float a = 0.0f;
 	Float b = 0.0f;
+	//The location to render for each pixel
 	Float p = *x;
 	Float q = *y;
+	//The number of iterations it has taken to prove a point is
+	// or is not in the Mandelbrot set
 	Int it = *iterations;
 	Int mit = MAX_FRACTAL_ITERATIONS;
 
@@ -39,15 +43,52 @@ void mandelbrot(Ptr<Float> x, Ptr<Float> y, Ptr<Int> iterations) {
 
 	While(any(keepGoing))
 		Where(keepGoing)
-		xtemp = (a * a) - (b * b) + p;
-	b = 2 * a * b + q;
-	a = xtemp;
-	it++;
-	EndBlock
+				xtemp = (a * a) - (b * b) + p;
+				b = 2 * a * b + q;
+				a = xtemp;
+				it++;
+			EndBlock
 		EndBlock
 
 		* iterations = it;
 }
+
+
+//The same mandelbrot algorithm, only enhanced further for the Pi's GPU
+void mandelbrot2(Float upper_x, Float upper_y, Float image_width, Float image_height, Ptr<Int> iterations) {
+	//Temporary variables
+	Float a = 0.0f;
+	Float b = 0.0f;
+	//The location in memory of the array of pixels
+	Ptr<Int> it_ptr = iterations;
+	//The location to render for each pixel
+	Float p = 0.f;//TODO
+	Float q = 0.f;
+	//The number of iterations it has taken to prove a point is
+	// or is not in the Mandelbrot set
+	Int it = *iterations;
+	Int mit = MAX_FRACTAL_ITERATIONS;
+
+	//Create a temporary value
+	Float xtemp = 0.0;
+	BoolExpr keepGoing = it < mit && a * a + b * b <= 4.f;
+
+
+
+	While(any(keepGoing))
+		Where(keepGoing)
+		For(Int i = 0, i < 8, i++)
+			xtemp = (a * a) - (b * b) + p;
+			b = 2 * a * b + q;
+			a = xtemp;
+			it++;
+		EndBlock
+		EndBlock
+		EndBlock
+
+		* iterations = it;
+}
+
 
 /*
 int main()
@@ -80,6 +121,13 @@ float random_float() {
 
 int main()
 {
+	//Graphics
+	sf::RenderWindow window(sf::VideoMode(800, 480), "SFML works!");
+	int width = window.getSize().x, height = window.getSize().y;
+	int dim = width * height;
+
+	//Initialize the image
+	initializeImage(window.getSize().x, window.getSize().y);
 
 	// Construct kernel
 	auto k = compile(mandelbrot);
@@ -88,18 +136,6 @@ int main()
 	SharedArray<float> x(16), y(16);
 	SharedArray<int> iterations(16);
 
-
-
-
-
-
-
-	//Graphics
-	sf::RenderWindow window(sf::VideoMode(800, 480), "SFML works!");
-	int width = window.getSize().x, height = window.getSize().y;
-
-	//Initialize the image
-	initializeImage(window.getSize().x, window.getSize().y);
 
 	int p = 0;
 	int q = 0;
