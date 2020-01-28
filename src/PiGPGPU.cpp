@@ -6,7 +6,7 @@
 
 #include "PiGPGPU.h"
 
-#define MAX_FRACTAL_ITERATIONS 64
+#define MAX_FRACTAL_ITERATIONS 1024
 
 
 void gcd(Ptr<Int> p, Ptr<Int> q, Ptr<Int> r)
@@ -54,42 +54,6 @@ void mandelbrot(Ptr<Float> x, Ptr<Float> y, Ptr<Int> iterations) {
 }
 
 
-//The same mandelbrot algorithm, only enhanced further for the Pi's GPU
-void mandelbrot2(Float upper_x, Float upper_y, Float image_width, Float image_height, Ptr<Int> iterations) {
-	//Temporary variables
-	Float a = 0.0f;
-	Float b = 0.0f;
-	//The location in memory of the array of pixels
-	Ptr<Int> it_ptr = iterations;
-	//The location to render for each pixel
-	Float p = 0.f;//TODO
-	Float q = 0.f;
-	//The number of iterations it has taken to prove a point is
-	// or is not in the Mandelbrot set
-	Int it = *iterations;
-	Int mit = MAX_FRACTAL_ITERATIONS;
-
-	//Create a temporary value
-	Float xtemp = 0.0;
-	BoolExpr keepGoing = it < mit && a * a + b * b <= 4.f;
-
-
-
-	While(any(keepGoing))
-		Where(keepGoing)
-		For(Int i = 0, i < 8, i++)
-			xtemp = (a * a) - (b * b) + p;
-			b = 2 * a * b + q;
-			a = xtemp;
-			it++;
-		EndBlock
-		EndBlock
-		EndBlock
-
-		* iterations = it;
-}
-
-
 /*
 int main()
 {
@@ -119,8 +83,13 @@ float random_float() {
 	return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 }
 
-int main()
+
+int main(int argc, char* argv[], char* envp[])
 {
+
+	
+
+
 	//Graphics
 	sf::RenderWindow window(sf::VideoMode(800, 480), "SFML works!");
 	int width = window.getSize().x, height = window.getSize().y;
@@ -163,7 +132,7 @@ int main()
 
 		// Use the output to change the pixels
 		for (i = 0; i < 16; i++) {
-			int val = iterations[i] * 255 / MAX_FRACTAL_ITERATIONS;
+			int val = iterations[i] % 255;
 			sf::Color c = sf::Color(val/3, val, val);
 			paintPixel(p, q, c);
 			p++;
@@ -176,6 +145,15 @@ int main()
 				}
 			}
 		}
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		window.clear();
+		drawImage(&window);
+		window.display();
 	}
 
 	printf("Done!\n");
@@ -192,10 +170,15 @@ int main()
 		window.clear();
 		drawImage(&window);
 		window.display();
+
+		//Wait
+		const sf::Time wait_time = sf::milliseconds(1000);
+		sf::sleep(wait_time);
 	}
 
 	return 0;
 }
+
 
 void initializeImage(int width, int height)
 {
