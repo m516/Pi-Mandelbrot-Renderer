@@ -1,5 +1,9 @@
 # PiGPGPU
- This is a simple CMake project using [QPULib](https://github.com/m516/QPULib-CMake). It also serves as a template for future projects
+ This is a simple CMake project that renders a Mandelbrot fractal to demonstrate hardware-accelerated computing on the Raspberry Pi. 
+ It uses [QPULib](https://github.com/m516/QPULib-CMake) (a library that accelerates computation on the Raspberry Pi by executing code on the Pi's GPU) and [SFML](https://www.sfml-dev.org/) (for graphics). While this project is intended to be run on a Raspberry Pi, it also
+ runs natively on other devices running Windows or Linux, just without hardware-accelerated Mandelbrot rendering.
+ 
+ This project also serves as a template for future projects
  
 ## Try me!
 
